@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canada Horizon | Immigration & Visas</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- 1. MISE À JOUR DU MOTEUR EMAILJS (Version 4 stable) -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+    <style>
+        /* Variables de design haut de gamme */
+        :root {
+            --bg-overlay: radial-gradient(circle at 80% 20%, rgba(224, 234, 252, 0.45), rgba(207, 222, 243, 0.5));
+            --bg-img: url('https://images.unsplash.com/photo-1507608869274-d3177c8bb4c7?auto=format&fit=crop&w=1920&q=80');
+            --card-bg: rgba(255, 255, 255, 0.4);
+            --card-border: rgba(255, 255, 255, 0.4);
+            --text-main: #0f172a;
+            --text-muted: #334155;
+            --accent: #b91c1c; /* Rouge bordeaux pro */
+            --input-bg: rgba(255, 255, 255, 0.7);
+            --nav-bg: rgba(255, 255, 255, 0.3);
+            --shadow: rgba(15, 23, 42, 0.08);
+            --whatsapp-color: #25D366;
+        }
+
+        /* Mode sombre ultra-pro */
+        [data-theme="dark"] {
+            --bg-overlay: radial-gradient(circle at 80% 20%, rgba(15, 23, 42, 0.85), rgba(30, 41, 59, 0.95));
+            --card-bg: rgba(15, 23, 42, 0.6);
+            --card-border: rgba(255, 255, 255, 0.08);
+            --text-main: #f8fafc;
+            --text-muted: #cbd5e1;
+            --accent: #ef4444;
+            --input-bg: rgba(30, 41, 59, 0.75);
+            --nav-bg: rgba(15, 23, 42, 0.5);
+            --shadow: rgba(0, 0, 0, 0.5);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body, header, .hero-card, input, select, .theme-toggle, h1, h2, p, label {
+            transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        body {
+            background: var(--bg-overlay), var(--bg-img);
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            min-height: 100vh;
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* Barre de navigation */
+        header {
+            width: 100%;
+            padding: 20px 5%;
+            background: var(--nav-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--card-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            z-index: 10;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            font-size: 1.3rem;
+            color: var(--text-main);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .brand i {
+            color: var(--accent);
+            font-size: 1.6rem;
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        nav a:hover, nav a.active {
+            color: var(--accent);
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            color: var(--text-main);
+            font-size: 1.3rem;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        /* Zone Principale (Hero Section) */
+        .hero-container {
+            flex: 1;
+            max-width: 1200px;
+            width: 100%;
+            margin: 120px auto 40px auto;
+            padding: 0 5%;
+            display: grid;
+            grid-template-columns: 1fr 1.1fr;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .hero-text {
+            text-align: left;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(185, 28, 28, 0.1);
+            color: var(--accent);
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            border: 1px solid rgba(185, 28, 28, 0.2);
+        }
+
+        .hero-text h1 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 20px;
+        }
+
+        .hero-text p {
+            font-size: 1.05rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .feat-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--text-main);
+        }
+
+        .feat-item i {
+            color: #22c55e;
+            font-size: 1.1rem;
+        }
+
+        /* Carte en Verre Dépoli */
+        .hero-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--card-border);
+            border-radius: 24px;
+            padding: 35px;
+            box-shadow: 0 20px 40px var(--shadow);
+            text-align: center;
+            min-height: 480px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .card-header h2 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .card-header p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .form-group {
+            text-align: left;
+            margin-bottom: 15px;
+        }
+
+        .form-group.full-width {
+            grid-column: span 2;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: var(--text-main);
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-wrapper i {
+            position: absolute;
+            left: 15px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        input[type="text"], input[type="number"], input[type="email"], select {
+            width: 100%;
+            padding: 12px 15px 12px 42px;
+            background: var(--input-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 10px;
+            outline: none;
+            color: var(--text-main);
+            font-size: 0.9rem;
+            appearance: none;
+        }
+
+        select {
+            padding-right: 30px;
+            cursor: pointer;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 14px;
+            background: var(--accent);
+            color: #ffffff;
+            border: none;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(185, 28, 28, 0.2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-top: 5px;
+        }
+
+        .btn-submit:hover {
+            opacity: 0.95;
+            transform: translateY(-1px);
+        }
+
+        .btn-submit:disabled {
+            background: #555555 !important;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        /* Écran de contact final (WhatsApp) */
+        .contact-redirect {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .contact-redirect i.success-icon {
+            font-size: 3.5rem;
+            color: #22c55e;
+            margin-bottom: 15px;
+        }
+
+        .contact-redirect h2 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .contact-redirect p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+
+        .btn-whatsapp {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            padding: 15px;
+            background: var(--whatsapp-color);
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+        }
+
+        .btn-whatsapp:hover {
+            opacity: 0.95;
+            transform: translateY(-1px);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .message.error {
+            margin-top: 15px;
+            font-size: 0.85rem;
+            display: none;
+            padding: 10px;
+            border-radius: 8px;
+            background: rgba(239, 68, 68, 0.15);
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.25);
+        }
+
+        .spinner {
+            display: none;
+            width: 18px;
+            height: 18px;
+            border: 2.5px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .trust-footer {
+            margin-top: 20px;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        @media (max-width: 968px) {
+            .hero-container { grid-template-columns: 1fr; margin-top: 100px; gap: 30px; }
+            .hero-text h1 { font-size: 2.1rem; text-align: center; }
+            .hero-text p { text-align: center; }
+            .badge { display: flex; max-width: max-content; margin: 0 auto 20px auto; }
+            .form-grid { grid-template-columns: 1fr; gap: 0; }
+            .form-group { grid-column: span 2; }
+            nav a { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="brand">
+            <i class="fas fa-maple-leaf"></i>
+            <span>CanadaHorizon</span>
+        </div>
+        <nav>
+            <a href="#" class="active">Accueil</a>
+            <a href="#">Nos Services</a>
+            <a href="#">Évaluation</a>
+            <button class="theme-toggle" id="themeToggle" type="button">
+                <i class="fas fa-moon" id="themeIcon"></i>
+            </button>
+        </nav>
+    </header>
+
+    <main class="hero-container">
+        
+        <div class="hero-text">
+            <div class="badge">
+                <i class="fas fa-shield-alt"></i> Cabinet Conseil Expert
+            </div>
+            <h1>Construisez votre nouvelle vie au Canada</h1>
+            <p>De l'évaluation de votre profil jusqu'à l'obtention de votre visa permanent ou temporaire, notre cabinet vous guide à chaque étape pour concrétiser votre rêve canadien en toute sérénité.</p>
+            
+            <div class="features">
+                <div class="feat-item"><i class="fas fa-check-circle"></i> Experts Réglementés</div>
+                <div class="feat-item"><i class="fas fa-check-circle"></i> Évaluation 100% Conforme</div>
+                <div class="feat-item"><i class="fas fa-check-circle"></i> Procédure Sécurisée</div>
+                <div class="feat-item"><i class="fas fa-check-circle"></i> Suivi Personnalisé</div>
+            </div>
+        </div>
+
+        <div class="hero-card">
+            
+            <div id="formContainer">
+                <div class="card-header">
+                    <h2>Évaluation Préliminaire</h2>
+                    <p>Remplissez ce formulaire pour vérifier votre éligibilité et recevoir notre guide gratuit.</p>
+                </div>
+
+                <form id="immigrationForm">
+                    <div class="form-grid">
+                        <div class="form-group full-width">
+                            <label for="fullName">Nom complet (tel que sur le passeport)</label>
+                            <div class="input-wrapper">
+                                <i class="fas fa-user"></i>
+                                <input type="text" id="fullName" placeholder="Ex: Jean Paul Nguemo" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="age">Âge actuel</label>
+                            <div class="input-wrapper">
+                                <i class="fas fa-calendar-alt"></i>
+                                <input type="number" id="age" min="18" max="70" placeholder="Ex: 26" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="idNumber">N° CNI ou Passeport</label>
+                            <div class="input-wrapper">
+                                <i class="fas fa-id-card"></i>
+                                <input type="text" id="idNumber" placeholder="N° de pièce" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label for="education">Plus haut niveau d'études validé</label>
+                            <div class="input-wrapper">
+                                <i class="fas fa-graduation-cap" style="position: absolute; left: 15px; z-index: 2;"></i>
+                                <select id="education" required style="position: relative; z-index: 1;">
+                                    <option value="" disabled selected>Sélectionnez votre niveau...</option>
+                                    <option value="Baccalauréat">Baccalauréat / Probatoire / Équivalent</option>
+                                    <option value="Licence / BTS">Licence / BTS / GCE AL / Équivalent</option>
+                                    <option value="Master">Master / Diplôme d'Ingénieur</option>
+                                    <option value="Doctorat">Doctorat</option>
+                                    <option value="Autre">Autre diplôme technique / professionnel</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label for="email">Adresse e-mail valide</label>
+                            <div class="input-wrapper">
+                                <i class="fas fa-envelope"></i>
+                                <input type="email" id="email" placeholder="nom@exemple.com" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-submit" id="submitBtn">
+                        <span>Soumettre mon dossier</span>
+                        <div class="spinner" id="spinner"></div>
+                    </button>
+                </form>
+                
+                <div class="message error" id="errorMsg">Une erreur est survenue lors de l'envoi. Veuillez réessayer.</div>
+            </div>
+
+            <!-- ÉCRAN DE REDIRECTION WHATSAPP DYNAMIQUE -->
+            <div class="contact-redirect" id="contactSection">
+                <i class="fas fa-check-circle success-icon"></i>
+                <h2>Dossier Reçu !</h2>
+                <p>Votre guide d'immigration a été envoyé sur votre e-mail.<br><br><strong>Dernière étape obligatoire :</strong> Contactez un conseiller sur WhatsApp pour valider l'analyse de vos informations et planifier votre entretien.</p>
+                
+                <a href="#" id="whatsappLink" target="_blank" class="btn-whatsapp">
+                    <i class="fab fa-whatsapp"></i> Finaliser sur WhatsApp
+                </a>
+            </div>
+
+            <div class="trust-footer">
+                <span><i class="fas fa-lock"></i> Données sécurisées</span>
+                <span>•</span>
+                <span>Cabinet Conseil</span>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        // --- LOGIQUE JOUR / NUIT ---
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        updateToggleStyle(savedTheme);
+
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            let newTheme = 'light';
+            if (currentTheme === 'light') newTheme = 'dark';
+            
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateToggleStyle(newTheme);
+        });
+
+        function updateToggleStyle(theme) {
+            if (theme === 'dark') {
+                themeIcon.className = 'fas fa-sun';
+                themeIcon.style.color = '#e2e8f0';
+            } else {
+                themeIcon.className = 'fas fa-moon';
+                themeIcon.style.color = '#0f172a';
+            }
+        }
+
+        // --- ENVOI DE FORMULAIRE INTÉGRAL AVEC TES CLÉS REELLES ---
+        // Initialisation immédiate avec TA clé publique
+        emailjs.init("adCz_9UWpUycHBqBM");
+
+        const form = document.getElementById('immigrationForm');
+        const formContainer = document.getElementById('formContainer');
+        const contactSection = document.getElementById('contactSection');
+        const submitBtn = document.getElementById('submitBtn');
+        const spinner = document.getElementById('spinner');
+        const errorMsg = document.getElementById('errorMsg');
+        const whatsappLink = document.getElementById('whatsappLink');
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            errorMsg.style.display = 'none';
+            spinner.style.display = 'block';
+            submitBtn.disabled = true;
+
+            // Collecte précise des données du formulaire d'origine
+            const fullName = document.getElementById('fullName').value;
+            const templateParams = {
+                name: fullName,
+                user_email: document.getElementById('email').value,
+                user_age: document.getElementById('age').value,
+                user_id_number: document.getElementById('idNumber').value,
+                user_education: document.getElementById('education').value
+            };
+
+            // Envoi des variables ve
